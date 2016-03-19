@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # update / upgrade
 apt-get -y update && apt-get -y upgrade
 
@@ -49,6 +51,9 @@ sudo logwatch --mailto email@gmail.com --output mail --format html --range 'betw
 # config git
 git config --global user.name "Server"
 git config --global user.email email@gmail.com
+git config --global url."https://".insteadOf git://
+git config --global http.sslVerify false
+git config --global color.ui true
 
 # Install VPN
 wget https://raw.github.com/viljoviitanen/setup-simple-pptp-vpn/master/setup.sh
@@ -64,9 +69,9 @@ curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 sudo apt-get -y update
 sudo apt-get -y install nodejs node-gyp
 sudo ln -s /usr/bin/nodejs /usr/bin/node
-npm install -g npm node-gyp
 npm config set strict-ssl false
 npm config set registry http://registry.npmjs.org/
+npm install -g npm node-gyp node-sass pm2 bower gulp strongloop mocha karma-cli
 
 # Install MongoDB
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
