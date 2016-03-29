@@ -4,7 +4,7 @@
 apt-get -y update && apt-get -y upgrade
 
 # install required packages
-apt-get install -y build-essential fail2ban ufw nano git git-core curl nginx chkrootkit mailutils libsasl2-modules
+apt-get install -y build-essential fail2ban ufw nano git git-core curl nginx chkrootkit mailutils libsasl2-modules logwatch libdate-manip-perl
 
 # Config firewall
 ufw allow 25
@@ -33,7 +33,7 @@ ignoreip = 127.0.0.1/8 your_home_IP
 findtime = 3600
 maxretry = 6
 mta = mail
-destemail = email@gmail.com
+destemail = eduardo.gch@gmail.com
 sendername = Fail2BanAlerts
 # ----------------------------------------------------------------------
 
@@ -46,11 +46,13 @@ logwatch | less
 tail -f /var/log/syslog
 
 # Logwatch
-sudo logwatch --mailto email@gmail.com --output mail --format html --range 'between -7 days and today'
+locale-gen en_US en_US.UTF-8
+dpkg-reconfigure locales
+sudo logwatch --mailto eduardo.gch@gmail.com --output mail --format html --range 'between -7 days and today' 
 
 # config git
 git config --global user.name "Server"
-git config --global user.email email@gmail.com
+git config --global user.email eduardo.gch@gmail.com
 git config --global url."https://".insteadOf git://
 git config --global http.sslVerify false
 git config --global color.ui true
