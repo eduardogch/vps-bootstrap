@@ -67,13 +67,12 @@ chmod +x speedtest-cli
 ./speedtest-cli
 
 # Node & Mongo
-curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-sudo apt-get -y update
-sudo apt-get -y install nodejs node-gyp
-sudo ln -s /usr/bin/nodejs /usr/bin/node
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+nvm install node
+nvm use node
 npm config set strict-ssl false
 npm config set registry http://registry.npmjs.org/
-npm install -g npm node-gyp node-sass pm2 bower gulp strongloop mocha karma-cli
+npm install -g npm node-gyp node-sass pm2 bower gulp mocha karma-cli
 
 # Install MongoDB
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
@@ -98,7 +97,7 @@ relayhost = [smtp.sendgrid.net]:587
 # ----------------------------------------------------------------------
 
 # Test email from Postfix
-echo "Test mail from postfix" | mail -s "Test Postfix" email@gmail.com
+echo "Test mail from postfix" | mail -s "Test Postfix" eduardo.gch@gmail.com
 
 # Crontab task
 crontab -e
