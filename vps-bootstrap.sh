@@ -10,6 +10,8 @@ apt-get install -y build-essential fail2ban ufw nano git git-core curl nginx chk
 sudo nano etc/ssh/sshd_config
 # ----------------------------------------------------------------------
 Port 2936
+
+service ssh restart
 # ----------------------------------------------------------------------
 
 # Config firewall
@@ -60,25 +62,29 @@ npm config set strict-ssl false
 npm config set registry http://registry.npmjs.org/
 npm install -g npm node-gyp node-sass pm2 bower gulp mocha karma-cli
 
-# Apache
-nano /etc/httpd/conf/httpd.conf
+# nginx
+nano /etc/nginx/conf.d/virtual.conf
 # ----------------------------------------------------------------------
-<VirtualHost *:80>
-ServerAdmin eduardo.gch@gmail.com
-   DocumentRoot /opt/htdocs/website1
-   ServerName website1.com
-   ErrorLog logs/website1.com-error_log
-   CustomLog logs/website1.com-access_log common
-</VirtualHost>
-<VirtualHost *:80>
-   ServerAdmin eduardo.gch@gmail.com
-   DocumentRoot /opt/htdocs/website2
-   ServerName website2.com
-   ErrorLog logs/website2.com-error_log
-   CustomLog logs/website2.com-access_log common
-</VirtualHost>
+server {
+   listen 80;
+   root /opt/htdocs/website1;
+   index index.html index.htm;
+   server_name website1.com;
+   location / {
+       try_files $uri $uri/ =404;
+   }
+}
+server {
+   listen 80;
+   root /opt/htdocs/website2;
+   index index.html index.htm;
+   server_name website2.com;
+   location / {
+       try_files $uri $uri/ =404;
+   }
+}
 # ----------------------------------------------------------------------
-service apache2 restart
+service nginx restart
 
 # config mail posfix
 sudo nano /etc/postfix/main.cf
