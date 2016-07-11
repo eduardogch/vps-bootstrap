@@ -30,7 +30,6 @@ ufw enable
 # config fail2ban
 sudo nano /etc/fail2ban/jail.local
 # ----------------------------------------------------------------------
-ignoreip = 127.0.0.1/8 your_home_IP
 findtime = 3600
 maxretry = 6
 mta = mail
