@@ -63,25 +63,23 @@ npm config set registry http://registry.npmjs.org/
 npm install -g npm node-gyp node-sass pm2 bower gulp mocha karma-cli
 
 # nginx
-nano /etc/nginx/conf.d/virtual.conf
+sudo mkdir -p /var/www/example.com/html
+sudo mkdir -p /var/www/test.com/html
+sudo chmod -R 755 /var/www
+
+rm /etc/nginx/sites-enabled/default
+nano /etc/nginx/sites-available/example.com
+nano /etc/nginx/sites-available/test.com
 # ----------------------------------------------------------------------
 server {
-   listen 80;
-   root /opt/htdocs/website1;
-   index index.html index.htm;
-   server_name website1.com;
-   location / {
-       try_files $uri $uri/ =404;
-   }
-}
-server {
-   listen 80;
-   root /opt/htdocs/website2;
-   index index.html index.htm;
-   server_name website2.com;
-   location / {
-       try_files $uri $uri/ =404;
-   }
+    listen 80;
+    listen [::]:80;
+    root /var/www/test.com/html;
+    index index.html index.htm;
+    server_name test.com www.test.com;
+    location / {
+        try_files $uri $uri/ =404;
+    }
 }
 # ----------------------------------------------------------------------
 service nginx restart
