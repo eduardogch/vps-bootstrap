@@ -52,13 +52,33 @@ wget -O speedtest-cli https://raw.github.com/sivel/speedtest-cli/master/speedtes
 chmod +x speedtest-cli
 ./speedtest-cli
 
-# Node & Mongo
+# Node
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash
 nvm install node
 nvm use node
 npm config set strict-ssl false
 npm config set registry http://registry.npmjs.org/
 npm install -g npm node-gyp node-sass pm2 bower gulp mocha karma-cli
+
+# Apache
+nano /etc/httpd/conf/httpd.conf
+# ----------------------------------------------------------------------
+<VirtualHost *:80>
+ServerAdmin eduardo.gch@gmail.com
+   DocumentRoot /opt/htdocs/website1
+   ServerName website1.com
+   ErrorLog logs/website1.com-error_log
+   CustomLog logs/website1.com-access_log common
+</VirtualHost>
+<VirtualHost *:80>
+   ServerAdmin eduardo.gch@gmail.com
+   DocumentRoot /opt/htdocs/website2
+   ServerName website2.com
+   ErrorLog logs/website2.com-error_log
+   CustomLog logs/website2.com-access_log common
+</VirtualHost>
+# ----------------------------------------------------------------------
+service apache2 restart
 
 # config mail posfix
 sudo nano /etc/postfix/main.cf
