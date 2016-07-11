@@ -103,8 +103,5 @@ crontab -e
 @monthly root (/usr/bin/apt-get -y update && /usr/bin/apt-get -y upgrade) > /dev/null
 # ----------------------------------------------------------------------
 
-# Clean repositories sources
-/etc/apt/sources.list.d
-
 # Clean system
-sudo apt-get -f install && sudo apt-get autoremove && sudo apt-get -y autoclean && sudo apt-get -y clean
+apt-get -f install && apt-get autoremove && apt-get -y autoclean && apt-get -y clean
