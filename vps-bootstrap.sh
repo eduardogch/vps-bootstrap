@@ -6,6 +6,12 @@ apt-get -y update && apt-get -y upgrade
 # install required packages
 apt-get install -y build-essential fail2ban ufw nano git git-core curl nginx chkrootkit mailutils libsasl2-modules logwatch libdate-manip-perl
 
+#config ssh
+sudo nano etc/ssh/sshd_config
+# ----------------------------------------------------------------------
+Port 2936
+# ----------------------------------------------------------------------
+
 # Config firewall
 ufw allow 25
 ufw allow 80
@@ -19,14 +25,7 @@ nano /etc/rc.local
 ufw enable
 # ----------------------------------------------------------------------
 
-#config ssh
-sudo nano etc/ssh/sshd_config
-# ----------------------------------------------------------------------
-Port 2936
-# ----------------------------------------------------------------------
-
 # config fail2ban
-sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 sudo nano /etc/fail2ban/jail.local
 # ----------------------------------------------------------------------
 ignoreip = 127.0.0.1/8 your_home_IP
@@ -36,19 +35,6 @@ mta = mail
 destemail = eduardo.gch@gmail.com
 sendername = Fail2BanAlerts
 # ----------------------------------------------------------------------
-
-# Add new eduardo user
-adduser eduardo
-gpasswd -a eduardo sudo
-
-# View logs
-logwatch | less
-tail -f /var/log/syslog
-
-# Logwatch
-locale-gen en_US en_US.UTF-8
-dpkg-reconfigure locales
-sudo logwatch --mailto eduardo.gch@gmail.com --output mail --format html --range 'between -7 days and today' 
 
 # config git
 git config --global user.name "Server"
@@ -67,22 +53,12 @@ chmod +x speedtest-cli
 ./speedtest-cli
 
 # Node & Mongo
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash
 nvm install node
 nvm use node
 npm config set strict-ssl false
 npm config set registry http://registry.npmjs.org/
 npm install -g npm node-gyp node-sass pm2 bower gulp mocha karma-cli
-
-# Install MongoDB
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
-sudo apt-get -y update && sudo apt-get -y install mongodb-org
-
-### Install Redis
-sudo apt-get -y update && sudo apt-get -y install redis-server
-sudo update-rc.d redis-server defaults
-sudo /etc/init.d/redis-server start
 
 # config mail posfix
 sudo nano /etc/postfix/main.cf
@@ -95,9 +71,6 @@ header_size_limit = 4096000
 relayhost = [smtp.sendgrid.net]:587
 /etc/init.d/postfix restart
 # ----------------------------------------------------------------------
-
-# Test email from Postfix
-echo "Test mail from postfix" | mail -s "Test Postfix" eduardo.gch@gmail.com
 
 # Crontab task
 crontab -e
