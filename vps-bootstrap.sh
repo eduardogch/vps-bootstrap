@@ -103,5 +103,8 @@ crontab -e
 @monthly root (/usr/bin/apt-get -y update && /usr/bin/apt-get -y upgrade) > /dev/null
 # ----------------------------------------------------------------------
 
+# Ubuntu Env Variables
+locale-gen en_US && locale-gen en_US.UTF-8
+
 # Clean system
 apt-get -f install && apt-get autoremove && apt-get -y autoclean && apt-get -y clean
